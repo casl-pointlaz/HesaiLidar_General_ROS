@@ -345,4 +345,45 @@ PTC_ErrCode TcpCommandResetCalibration(const void* handle) {
   return cmd.header.ret_code;
 }
 
+// Added by agruet
+PTC_ErrCode TcpCommandSetStandby(const void* handle, int on)
+{
+    if (!handle)
+    {
+        printf("Bad Parameter!!!\n");
+        return PTC_ERROR_BAD_PARAMETER;
+    }
+    TcpCommandClient *client = (TcpCommandClient *) handle;
+
+    char *buffer;
+    if (on == 1)
+    {
+        buffer[0] = 0;
+    }
+    else
+    {
+        buffer[0] = 1;
+    }
+
+    TC_Command cmd;
+    memset(&cmd, 0, sizeof(TC_Command));
+    cmd.header.cmd = 0x1c;
+    cmd.header.len = 1;
+    cmd.data = strdup(buffer);
+
+    PTC_ErrCode errorCode = tcpCommandClient_SendCmd(client, &cmd);
+    if (errorCode != PTC_ERROR_NO_ERROR) {
+        free(cmd.data);
+        return errorCode;
+    }
+    free(cmd.data);
+
+    if (cmd.ret_data) {
+        // useless data;
+        free(cmd.ret_data);
+    }
+
+    return cmd.header.ret_code;
+}
+
 void TcpCommandClientDestroy(const void* handle) {}

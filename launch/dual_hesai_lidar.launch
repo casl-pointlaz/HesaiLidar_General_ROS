@@ -1,7 +1,11 @@
 <!-- dual_hesai_lidar.launch -->
 <!-- Launch two Hesai LiDAR -->
+<!-- Created by agruet -->
 
 <launch>
+    <!-- Args -->
+    <arg name="open_rviz"           default="true"/>
+
     <!-- LiDAR 1 parameters -->
     <arg name="lidar_1_namespace"   default="lidar_1_hesai"/>
     <arg name="lidar_1_server_ip"   default="192.168.1.201"/>
@@ -29,9 +33,11 @@
     <arg name="coordinate_correction_flag"  default="false"/>
     <arg name="fixed_frame"                 default=""/>
     <arg name="target_frame"                default=""/>
+    <arg name="standby"                     default="false"/>
 
     <!-- LiDAR 1 -->
     <include file="$(find hesai_lidar)/launch/hesai_lidar.launch">
+        <arg name="open_rviz"                   value="false"/>         <!-- Always keep it to "false" to avoid multiple Rviz -->
         <!-- LiDAR 1 parameters -->
         <arg name="namespace"                   value="$(arg lidar_1_namespace)"/>
         <arg name="server_ip"                   value="$(arg lidar_1_server_ip)"/>
@@ -51,10 +57,12 @@
         <arg name="coordinate_correction_flag"  value="$(arg coordinate_correction_flag)"/>
         <arg name="fixed_frame"                 value="$(arg fixed_frame)"/>
         <arg name="target_frame"                value="$(arg target_frame)"/>
+        <arg name="standby"                     value="$(arg standby)"/>
     </include>
 
     <!-- LiDAR 2 -->
     <include file="$(find hesai_lidar)/launch/hesai_lidar.launch">
+        <arg name="open_rviz"                   value="false"/>         <!-- Always keep it to "false" to avoid multiple Rviz  -->
         <!-- LiDAR 2 parameters -->
         <arg name="namespace"                   value="$(arg lidar_2_namespace)"/>
         <arg name="server_ip"                   value="$(arg lidar_2_server_ip)"/>
@@ -74,6 +82,12 @@
         <arg name="coordinate_correction_flag"  value="$(arg coordinate_correction_flag)"/>
         <arg name="fixed_frame"                 value="$(arg fixed_frame)"/>
         <arg name="target_frame"                value="$(arg target_frame)"/>
+        <arg name="standby"                     value="$(arg standby)"/>
     </include>
+
+    <!-- Launch Rviz if open_rviz == true -->
+    <group if="$(arg open_rviz)">
+        <node type="rviz" name="rviz" pkg="rviz" args="-d $(find hesai_lidar)/rviz/dual_hesai_lidar_config.rviz" />
+    </group>
 
 </launch>

@@ -6,6 +6,7 @@
 #include <pcl/point_types.h>
 #include "pandarGeneral_sdk/pandarGeneral_sdk.h"
 #include <fstream>
+#include <std_msgs/Int8.h>      // Added by agruet
 // #define PRINT_FLAG 
 
 using namespace std;
@@ -15,6 +16,10 @@ class HesaiLidarClient
 public:
   HesaiLidarClient(ros::NodeHandle node, ros::NodeHandle nh)
   {
+    // Subscriber (added by agruet) (name to validate with CASL)
+    scannerStateSubscriber = node.subscribe("/lazarrus/scanner_state", 1000, &HesaiLidarClient::scannerStateCallback, this);
+
+    // Publishers
     lidarPublisher = node.advertise<sensor_msgs::PointCloud2>("pandar", 10);
     packetPublisher = node.advertise<hesai_lidar::PandarScan>("pandar_packets",10);
 
@@ -49,6 +54,7 @@ public:
     nh.getParam("coordinate_correction_flag", coordinateCorrectionFlag);
     nh.getParam("target_frame", targetFrame);
     nh.getParam("fixed_frame", fixedFrame);
+    nh.getParam("standby", standby);        // Added by agruet
   
     if(!pcapFile.empty()){
       hsdk = new PandarGeneralSDK(pcapFile, boost::bind(&HesaiLidarClient::lidarCallback, this, _1, _2, _3), \
@@ -93,13 +99,35 @@ public:
         boost::bind(&HesaiLidarClient::gpsCallback, this, _1), static_cast<int>(startAngle * 100 + 0.5), 0, pclDataType, lidarType, frameId,\
          m_sTimestampType, lidarCorrectionFile, multicastIp, coordinateCorrectionFlag, targetFrame, fixedFrame);
     }
-    
-    if (hsdk != NULL) {
+
+    // Modified by agruet
+    std::cout << "Stand by : " << standby << std::endl;
+    if (hsdk != NULL)
+    {
+      if (standby)
+      {
+        hsdk->StandBy(true);
+        //ROS_INFO("LiDAR in Standby Mode.");
+      }
+      else
+      {
+        hsdk->StandBy(false);
         hsdk->Start();
-        // hsdk->LoadLidarCorrectionFile("...");  // parameter is stream in lidarCorrectionFile
-    } else {
-        printf("create sdk fail\n");
+        //ROS_INFO("LiDAR running.");
+      }
+      // hsdk->LoadLidarCorrectionFile("...");  // parameter is stream in lidarCorrectionFile
     }
+    else
+    {
+      printf("create sdk fail\n");
+    }
+  }
+
+  // Added by agruet
+  ~HesaiLidarClient()
+  {
+      hsdk->StandBy(true);
+      //printf("LiDAR in Standby Mode.");
   }
 
   void lidarCallback(boost::shared_ptr<PPointCloud> cld, double timestamp, hesai_lidar::PandarScanPtr scan) // the timestamp from first point cloud of cld
@@ -133,13 +161,33 @@ public:
     hsdk->PushScanPacket(scan);
   }
 
+  // Added by agruet (type of scanner_state to validate with CASL)
+  void scannerStateCallback(const std_msgs::Int8::ConstPtr& scanner_state_msg)
+  {
+      if((scanner_state_msg->data == 2 || scanner_state_msg->data == 3) && standby)
+      {
+          hsdk->StandBy(false);
+          hsdk->Start();
+          standby = false;
+          //ROS_INFO("LiDAR running.");
+      }
+      else if (!standby && scanner_state_msg->data != 2 && scanner_state_msg->data != 3)
+      {
+          hsdk->StandBy(true);
+          standby = true;
+          //ROS_INFO("LiDAR in Standby Mode.");
+      }
+  }
+
 private:
+  ros::Subscriber scannerStateSubscriber;       // Added by agruet
   ros::Publisher lidarPublisher;
   ros::Publisher packetPublisher;
   PandarGeneralSDK* hsdk;
   string m_sPublishType;
   string m_sTimestampType;
   ros::Subscriber packetSubscriber;
+  bool standby = true;       // Added by agruet
 };
 
 int main(int argc, char **argv)

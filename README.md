@@ -18,6 +18,28 @@ git push
 ```
 -It's possible that the merge doesn't complete automatically depending on the complexity of Pointlaz's modifications. In this case, be prepared to do a manual merge. You can use the method of your choice, by example using CLION: check https://www.jetbrains.com/help/clion/resolving-conflicts.html#distributed-version-control-systems
 
+### LiDARs IP Address and Destination Port
+In order to work with 2 LiDARs connected to the same computer, we had to change some internal parameters of the LiDARs.  
+The changes are the following:
+* lidar_1: 
+  * S/N = **XT39CE539439CF56**
+  * IP Address = **192.168.1.201** *(default value)*
+  * Destination Port = **2368** *(default value)*
+* lidar_2:
+  * S/N = **XT39CE539439CF56**
+  * IP Address = **192.168.1.202**
+  * Destination Port = **2369**
+
+*NOTE 1: The previous configuration is the one for the Toronto's LiDARs. Adapt it for the other ones.*  
+*NOTE 2: It would be a good idea to stick something on the LiDARs to tell which one is lidar_1 and which one is lidar_2.*
+
+If you want to change internal parameters of a Hesai LiDAR: 
+* Open your favorite web browser (Chrome or Firefox are recommended),
+* Enter the IP address of your Hesai LiDAR (if it has never been changed, the LiDAR IP address is **192.168.1.201**),
+* Go to the *Settings* page,
+* Change the *Control IP/IPv4 Address* to modify the LiDAR's IP Address,
+* Change the *Settings/LiDAR Destination Port* to modify the LiDAR's Destination Port.
+
 
 
 

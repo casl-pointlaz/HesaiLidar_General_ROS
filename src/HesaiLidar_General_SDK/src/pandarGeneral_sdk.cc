@@ -121,6 +121,28 @@ void PandarGeneralSDK::Stop() {
   }
 }
 
+// Added by agruet
+void PandarGeneralSDK::StandBy(bool standBy)
+{
+    if (!tcp_command_client_)
+    {
+        return;
+    }
+    int32_t ret = 0;
+    if (standBy)
+    {
+        std::cout << "[pandarGeneral_sdk] StandBy Mode Activation" << std::endl;
+        ret = TcpCommandSetStandby(tcp_command_client_,0);
+        std::cout << "[pandarGeneral_sdk] StandBy Mode Activated" << std::endl;
+    }
+    else
+    {
+        std::cout << "[pandarGeneral_sdk] StandBy Mode Deactivation" << std::endl;
+        ret = TcpCommandSetStandby(tcp_command_client_, 1);
+        std::cout << "[pandarGeneral_sdk] StandBy Mode Deactivated" << std::endl;
+    }
+}
+
 void PandarGeneralSDK::GetCalibrationFromDevice() {
   // LOG_FUNC();
   if (!tcp_command_client_) {
