@@ -6,7 +6,7 @@
 #include <pcl/point_types.h>
 #include "pandarGeneral_sdk/pandarGeneral_sdk.h"
 #include <fstream>
-#include <std_msgs/Int8.h>      // Added by agruet
+#include <std_msgs/String.h>      // Added by agruet
 // #define PRINT_FLAG 
 
 using namespace std;
@@ -107,13 +107,11 @@ public:
       if (standby)
       {
         hsdk->StandBy(true);
-        //ROS_INFO("LiDAR in Standby Mode.");
       }
       else
       {
         hsdk->StandBy(false);
         hsdk->Start();
-        //ROS_INFO("LiDAR running.");
       }
       // hsdk->LoadLidarCorrectionFile("...");  // parameter is stream in lidarCorrectionFile
     }
@@ -162,20 +160,18 @@ public:
   }
 
   // Added by agruet (type of scanner_state to validate with CASL)
-  void scannerStateCallback(const std_msgs::Int8::ConstPtr& scanner_state_msg)
+  void scannerStateCallback(const std_msgs::String::ConstPtr& scanner_state_msg)
   {
-      if((scanner_state_msg->data == 2 || scanner_state_msg->data == 3) && standby)
+      if((scanner_state_msg->data == "triggering" || scanner_state_msg->data == "recording") && standby)
       {
           hsdk->StandBy(false);
           hsdk->Start();
           standby = false;
-          //ROS_INFO("LiDAR running.");
       }
-      else if (!standby && scanner_state_msg->data != 2 && scanner_state_msg->data != 3)
+      else if (!standby && scanner_state_msg->data != "triggering" && scanner_state_msg->data != "recording")
       {
           hsdk->StandBy(true);
           standby = true;
-          //ROS_INFO("LiDAR in Standby Mode.");
       }
   }
 
