@@ -18,16 +18,16 @@ git push
 ```
 -It's possible that the merge doesn't complete automatically depending on the complexity of Pointlaz's modifications. In this case, be prepared to do a manual merge. You can use the method of your choice, by example using CLION: check https://www.jetbrains.com/help/clion/resolving-conflicts.html#distributed-version-control-systems
 
-### LiDARs IP Address and Destination Port
+### LiDARs IP Addresses and Destination Ports
 In order to work with 2 LiDARs connected to the same computer, we had to change some internal parameters of the LiDARs.  
 The changes are the following:
-* lidar_1: 
+* lidar_0: 
   * S/N = **XT39CE539439CF56**
   * IP Address = **192.168.1.201** *(default value)*
   * Destination Port = **2368** *(default value)*
-* lidar_2:
+* lidar_1:
   * S/N = **XT39CE539439CF56**
-  * IP Address = **192.168.1.202**
+  * IP Address = **192.168.2.201**
   * Destination Port = **2369**
 
 *NOTE 1: The previous configuration is the one for the Toronto's LiDARs. Adapt it for the other ones.*  
@@ -40,6 +40,29 @@ If you want to change internal parameters of a Hesai LiDAR:
 * Change the *Control IP/IPv4 Address* to modify the LiDAR's IP Address,
 * Change the *Settings/LiDAR Destination Port* to modify the LiDAR's Destination Port.
 
+### Configure your Ethernet ports
+Usually, Linux configure automatically the Ethernet ports of your computer and assigns randomly the IP address of the ports.  
+But as explained in [XT32_User_Manual_X01-en-220410.pdf](documentation%2FXT32_User_Manual_X01-en-220410.pdf) at page 31, you need to configure the IP of the Ethernet ports of your PC to connect to the LiDARs.  
+So your Ethernet ports IP must be static. To do so, follow the instructions from [this link](https://www.linuxtechi.com/assign-static-ip-address-ubuntu-20-04-lts/#:~:text=Configuring%20a%20static%20ip%20address,and%20then%20choose%20wired%20settings.&text=In%20the%20next%20window%2C%20Choose,gateway%20and%20DNS%20Server%20IP).  
+
+For the lidar_0 ethernet port, use:
+* IPv4 Method = **Manual**
+* Addresses/Address = **192.168.1.100**
+* Addresses/Netmask = **255.255.255.0**
+* Keep Addresses/Gateway empty  
+
+For the lidar_1 ethernet port, use:
+* IPv4 Method = **Manual**
+* Addresses/Address = **192.168.2.100**
+* Addresses/Netmask = **255.255.255.0**
+* Keep Addresses/Gateway empty
+
+
+*NOTE 1: Be careful to plug the LiDARs to Ethernet ports configured for them.*  
+*NOTE 2: If your Ethernet port IP is still resetting to **Automatic**, check if **/etc/netplan/01-netcfg.yaml** exists. If yes, remove it using:*
+```
+sudo rm 01-netcfg.yaml
+```
 
 
 

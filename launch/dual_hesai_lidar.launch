@@ -1,5 +1,5 @@
 <!-- dual_hesai_lidar.launch -->
-<!-- Launch two Hesai LiDAR -->
+<!-- Launch two Hesai LiDARs -->
 <!-- Created by agruet -->
 
 <launch>
@@ -7,18 +7,18 @@
     <arg name="open_rviz"           default="true"/>
 
     <!-- LiDAR 1 parameters -->
-    <arg name="lidar_1_namespace"   default="lidar_1_hesai"/>
-    <arg name="lidar_1_server_ip"   default="192.168.1.201"/>
-    <arg name="lidar_1_recv_port"   default="2368"/>
-    <arg name="lidar_1_gps_port"    default="10110"/>
-    <arg name="lidar_1_frame_id"    default="lidar_1"/>
+    <arg name="lidar_0_namespace"   default="lidar_0_hesai"/>
+    <arg name="lidar_0_server_ip"   default="192.168.1.201"/>
+    <arg name="lidar_0_recv_port"   default="2368"/>
+    <arg name="lidar_0_gps_port"    default="10110"/>
+    <arg name="lidar_0_frame_id"    default="lidar_0"/>
 
     <!-- LiDAR 2 parameters -->
-    <arg name="lidar_2_namespace"   default="lidar_2_hesai"/>
-    <arg name="lidar_2_server_ip"   default="192.168.1.202"/>
-    <arg name="lidar_2_recv_port"   default="2369"/>
-    <arg name="lidar_2_gps_port"    default="10110"/>
-    <arg name="lidar_2_frame_id"    default="lidar_2"/>
+    <arg name="lidar_1_namespace"   default="lidar_1_hesai"/>
+    <arg name="lidar_1_server_ip"   default="192.168.2.201"/>
+    <arg name="lidar_1_recv_port"   default="2369"/>
+    <arg name="lidar_1_gps_port"    default="10110"/>
+    <arg name="lidar_1_frame_id"    default="lidar_1"/>
 
     <!-- Common parameters -->
     <arg name="pcap_file"                   value=""/>
@@ -35,15 +35,15 @@
     <arg name="target_frame"                default=""/>
     <arg name="standby"                     default="false"/>
 
-    <!-- LiDAR 1 -->
+    <!-- lidar_0 -->
     <include file="$(find hesai_lidar)/launch/hesai_lidar.launch">
         <arg name="open_rviz"                   value="false"/>         <!-- Always keep it to "false" to avoid multiple Rviz -->
-        <!-- LiDAR 1 parameters -->
-        <arg name="namespace"                   value="$(arg lidar_1_namespace)"/>
-        <arg name="server_ip"                   value="$(arg lidar_1_server_ip)"/>
-        <arg name="lidar_recv_port"             value="$(arg lidar_1_recv_port)"/>
-        <arg name="gps_port"                    value="$(arg lidar_1_gps_port)"/>
-        <arg name="frame_id"                    value="$(arg lidar_1_frame_id)"/>
+        <!-- lidar_0 parameters -->
+        <arg name="namespace"                   value="$(arg lidar_0_namespace)"/>
+        <arg name="server_ip"                   value="$(arg lidar_0_server_ip)"/>
+        <arg name="lidar_recv_port"             value="$(arg lidar_0_recv_port)"/>
+        <arg name="gps_port"                    value="$(arg lidar_0_gps_port)"/>
+        <arg name="frame_id"                    value="$(arg lidar_0_frame_id)"/>
         <!-- Common parameters -->
         <arg name="pcap_file"                   value="$(arg pcap_file)"/>
         <arg name="start_angle"                 value="$(arg start_angle)"/>
@@ -60,15 +60,15 @@
         <arg name="standby"                     value="$(arg standby)"/>
     </include>
 
-    <!-- LiDAR 2 -->
+    <!-- lidar_1 -->
     <include file="$(find hesai_lidar)/launch/hesai_lidar.launch">
         <arg name="open_rviz"                   value="false"/>         <!-- Always keep it to "false" to avoid multiple Rviz  -->
-        <!-- LiDAR 2 parameters -->
-        <arg name="namespace"                   value="$(arg lidar_2_namespace)"/>
-        <arg name="server_ip"                   value="$(arg lidar_2_server_ip)"/>
-        <arg name="lidar_recv_port"             value="$(arg lidar_2_recv_port)"/>
-        <arg name="gps_port"                    value="$(arg lidar_2_gps_port)"/>
-        <arg name="frame_id"                    value="$(arg lidar_2_frame_id)"/>
+        <!-- lidar_1 parameters -->
+        <arg name="namespace"                   value="$(arg lidar_1_namespace)"/>
+        <arg name="server_ip"                   value="$(arg lidar_1_server_ip)"/>
+        <arg name="lidar_recv_port"             value="$(arg lidar_1_recv_port)"/>
+        <arg name="gps_port"                    value="$(arg lidar_1_gps_port)"/>
+        <arg name="frame_id"                    value="$(arg lidar_1_frame_id)"/>
         <!-- Common parameters -->
         <arg name="pcap_file"                   value="$(arg pcap_file)"/>
         <arg name="start_angle"                 value="$(arg start_angle)"/>

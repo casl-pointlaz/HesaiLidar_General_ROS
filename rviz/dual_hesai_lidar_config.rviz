@@ -25,7 +25,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: /lidar_2_hesai/pandar
+    SyncSource: /lidar_1_hesai/pandar
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -67,14 +67,14 @@ Visualization Manager:
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
-      Name: /lidar_1_hesai/pandar
+      Name: /lidar_0_hesai/pandar
       Position Transformer: ""
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /lidar_1_hesai/pandar
+      Topic: /lidar_0_hesai/pandar
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -95,14 +95,14 @@ Visualization Manager:
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
-      Name: /lidar_2_hesai/pandar
+      Name: /lidar_1_hesai/pandar
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /lidar_2_hesai/pandar
+      Topic: /lidar_1_hesai/pandar
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -111,7 +111,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: lidar_1
+    Fixed Frame: lidar_0
     Frame Rate: 30
   Name: root
   Tools:
