@@ -120,6 +120,18 @@ target_link_libraries(cloud_nodelet
     PandarGeneralSDK
 )
 
+add_executable(write_csv_node
+        src/writeCSV.cpp
+        )
+
+target_include_directories(write_csv_node PRIVATE
+        ${catkin_INCLUDE_DIRS}
+        )
+
+target_link_libraries(write_csv_node
+        ${catkin_LIBRARIES}
+        )
+
 install(TARGETS
     hesai_lidar_node
     PandarGeneral
