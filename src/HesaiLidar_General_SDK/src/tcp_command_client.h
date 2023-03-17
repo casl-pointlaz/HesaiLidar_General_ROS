@@ -61,6 +61,7 @@ PTC_ErrCode TcpCommandGetLidarCalibration(const void* handle, char** buffer,
                                           unsigned int* len);
 PTC_ErrCode TcpCommandResetCalibration(const void* handle);
 PTC_ErrCode TcpCommandSetStandby(const void* handle, int on);       // Added by agruet
+PTC_ErrCode TcpCommandSetSyncAngle(const void* handle, int activate_sync_angle, int sync_angle);       // Added by agruet
 void TcpCommandClientDestroy(const void* handle);
 
 #ifdef __cplusplus

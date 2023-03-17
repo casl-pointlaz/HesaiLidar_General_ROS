@@ -143,6 +143,27 @@ void PandarGeneralSDK::StandBy(bool standBy)
     }
 }
 
+void PandarGeneralSDK::SyncAngle(bool activate_sync_angle, int angle)
+{
+    if (!tcp_command_client_)
+    {
+        return;
+    }
+    int32_t ret = 0;
+    if (activate_sync_angle)
+    {
+        std::cout << "[pandarGeneral_sdk] Sync Angle Mode Activation" << std::endl;
+        ret = TcpCommandSetSyncAngle(tcp_command_client_, 1, angle);
+        std::cout << "[pandarGeneral_sdk] Sync Angle Mode Activated" << std::endl;
+    }
+    else
+    {
+        std::cout << "[pandarGeneral_sdk] Sync Angle Mode Deactivation" << std::endl;
+        ret = TcpCommandSetSyncAngle(tcp_command_client_, 0, angle);
+        std::cout << "[pandarGeneral_sdk] Sync Angle Mode Deactivated" << std::endl;
+    }
+}
+
 void PandarGeneralSDK::GetCalibrationFromDevice() {
   // LOG_FUNC();
   if (!tcp_command_client_) {

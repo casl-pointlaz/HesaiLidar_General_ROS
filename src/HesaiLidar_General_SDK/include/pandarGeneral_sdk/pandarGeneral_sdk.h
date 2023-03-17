@@ -80,7 +80,8 @@ class PandarGeneralSDK {
   void GetCalibrationFromDevice();
   void Start();
   void Stop();
-  void StandBy(bool standBy);       // Added by agruet
+  void StandBy(bool standBy);                               // Added by agruet
+  void SyncAngle(bool activate_sync_angle, int angle);      // Added by agruet
   void PushScanPacket(hesai_lidar::PandarScanPtr scan);
 
  private:

@@ -364,11 +364,46 @@ PTC_ErrCode TcpCommandSetStandby(const void* handle, int on)
     {
         buffer[0] = 1;
     }
+    TC_Command cmd;
+    memset(&cmd, 0, sizeof(TC_Command));
+    cmd.header.cmd = 0x1c;          // Code for PTC_COMMAND_SET_STANDBY_MODE
+    cmd.header.len = 1;
+    cmd.data = strdup(buffer);
+
+    PTC_ErrCode errorCode = tcpCommandClient_SendCmd(client, &cmd);
+    if (errorCode != PTC_ERROR_NO_ERROR) {
+        free(cmd.data);
+        return errorCode;
+    }
+    free(cmd.data);
+
+    if (cmd.ret_data) {
+        // useless data;
+        free(cmd.ret_data);
+    }
+
+    return cmd.header.ret_code;
+}
+
+// Added by agruet
+PTC_ErrCode TcpCommandSetSyncAngle(const void* handle, int activate_sync_angle, int sync_angle)
+{
+    if (!handle)
+    {
+        printf("Bad Parameter!!!\n");
+        return PTC_ERROR_BAD_PARAMETER;
+    }
+    TcpCommandClient *client = (TcpCommandClient *) handle;
+
+    char buffer[3];
+    buffer[0] = (char)activate_sync_angle;
+    buffer[1] = (char)(sync_angle & 0xFF);
+    buffer[2] = (char)((sync_angle >> 8) & 0xFF);
 
     TC_Command cmd;
     memset(&cmd, 0, sizeof(TC_Command));
-    cmd.header.cmd = 0x1c;
-    cmd.header.len = 1;
+    cmd.header.cmd = 0x18;          // Code for PTC_COMMAND_SET_SYNC_ANGLE
+    cmd.header.len = 3;
     cmd.data = strdup(buffer);
 
     PTC_ErrCode errorCode = tcpCommandClient_SendCmd(client, &cmd);
