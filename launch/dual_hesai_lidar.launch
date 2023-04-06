@@ -34,8 +34,6 @@
     <arg name="fixed_frame"                 default=""/>
     <arg name="target_frame"                default=""/>
     <arg name="standby"                     default="false"/>
-    <arg name="activate_sync_angle"         default="true"/>
-    <arg name="sync_angle"                  default="0"/>       <!-- Int between 0 and 359 -->
 
     <!-- lidar_0 -->
     <include file="$(find hesai_lidar)/launch/hesai_lidar.launch">
@@ -60,8 +58,6 @@
         <arg name="fixed_frame"                 value="$(arg fixed_frame)"/>
         <arg name="target_frame"                value="$(arg target_frame)"/>
         <arg name="standby"                     value="$(arg standby)"/>
-        <arg name="activate_sync_angle"			value="$(arg activate_sync_angle)"/>
-        <arg name="sync_angle"					value="$(arg sync_angle)"/>
     </include>
 
     <!-- lidar_1 -->
@@ -87,8 +83,6 @@
         <arg name="fixed_frame"                 value="$(arg fixed_frame)"/>
         <arg name="target_frame"                value="$(arg target_frame)"/>
         <arg name="standby"                     value="$(arg standby)"/>
-        <arg name="activate_sync_angle"			value="$(arg activate_sync_angle)"/>
-        <arg name="sync_angle"					value="$(arg sync_angle)"/>
     </include>
 
     <!-- Launch Rviz if open_rviz == true -->

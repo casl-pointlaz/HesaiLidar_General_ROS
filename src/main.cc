@@ -54,9 +54,7 @@ public:
     nh.getParam("coordinate_correction_flag", coordinateCorrectionFlag);
     nh.getParam("target_frame", targetFrame);
     nh.getParam("fixed_frame", fixedFrame);
-    nh.getParam("standby", standby);                                // Added by agruet
-    nh.getParam("activate_sync_angle", activate_sync_angle);        // Added by agruet
-    nh.getParam("sync_angle", sync_angle);                          // Added by agruet
+    nh.getParam("standby", standby);        // Added by agruet
   
     if(!pcapFile.empty()){
       hsdk = new PandarGeneralSDK(pcapFile, boost::bind(&HesaiLidarClient::lidarCallback, this, _1, _2, _3), \
@@ -106,8 +104,6 @@ public:
     std::cout << "Stand by : " << standby << std::endl;
     if (hsdk != NULL)
     {
-
-      // Stanby management
       if (standby)
       {
         hsdk->StandBy(true);
@@ -117,16 +113,12 @@ public:
         hsdk->StandBy(false);
         hsdk->Start();
       }
-
-      // Sync Angle management
-      hsdk->SyncAngle(activate_sync_angle, sync_angle);
+      // hsdk->LoadLidarCorrectionFile("...");  // parameter is stream in lidarCorrectionFile
     }
     else
     {
       printf("create sdk fail\n");
     }
-
-
   }
 
   // Added by agruet
@@ -192,8 +184,6 @@ private:
   string m_sTimestampType;
   ros::Subscriber packetSubscriber;
   bool standby = true;       // Added by agruet
-  bool activate_sync_angle = true;
-  int sync_angle = 0;
 };
 
 int main(int argc, char **argv)
