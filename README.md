@@ -1,71 +1,95 @@
 [![Build Status](https://travis-ci.org/amc-nu/HesaiLidar_Pandar64_ros.svg?branch=master)](https://travis-ci.org/amc-nu/HesaiLidar_Pandar64_ros)
 
 # HesaiLidar_General_ROS
+
+___
 ## This is the Pointlaz modified version
  Last modification 2023-01-30 by CASL and Antoine Gruet.
+
 ### How to update this version
 Since this the pointlaz modifications are contained on a branch, it is possible to isolate the modifications from the update.
--While working on this fork, start by checking out on the master branch
+- While working on this fork, start by checking out on the master branch
 ```
 git checkout master
 ```
--Then sync the fork with the update source version by using the method of your choice (see https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
--Then checkout back to the Pointlaz branch and merge the updated master into the branch.
+- Then sync the fork with the update source version by using the method of your choice (see https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
+- Then checkout back to the Pointlaz branch and merge the updated master into the branch.
 ```
 git checkout Pointlaz
 git merge master
 git push
 ```
--It's possible that the merge doesn't complete automatically depending on the complexity of Pointlaz's modifications. In this case, be prepared to do a manual merge. You can use the method of your choice, by example using CLION: check https://www.jetbrains.com/help/clion/resolving-conflicts.html#distributed-version-control-systems
+- It's possible that the merge doesn't complete automatically depending on the complexity of Pointlaz's modifications. In this case, be prepared to do a manual merge. You can use the method of your choice, by example using CLION: check https://www.jetbrains.com/help/clion/resolving-conflicts.html#distributed-version-control-systems
 
-### LiDARs IP Addresses and Destination Ports
-In order to work with 2 LiDARs connected to the same computer, we had to change some internal parameters of the LiDARs.  
-The changes are the following:
-* lidar_0: 
-  * S/N = **XT39CE539439CF56**
-  * IP Address = **192.168.1.201** *(default value)*
-  * Destination Port = **2368** *(default value)*
-* lidar_1:
-  * S/N = **XT39CE539439CF56**
-  * IP Address = **192.168.2.201**
-  * Destination Port = **2369**
+___
+## Hesai LiDARs configuration
+To operate 2 Hesai LiDARs on the same computer, you will have to configure your Ethernet Ports and internal LiDARs parameters.
 
-*NOTE 1: The previous configuration is the one for the Toronto's LiDARs. Adapt it for the other ones.*  
-*NOTE 2: It would be a good idea to stick something on the LiDARs to tell which one is lidar_1 and which one is lidar_2.*
+### Ethernet Ports and internal LiDARs parameters configuration
+Follow the next steps to configure the Ethernet Ports of your computer ([this tutorial](https://www.linuxtechi.com/assign-static-ip-address-ubuntu-20-04-lts/#:~:text=Configuring%20a%20static%20ip%20address,and%20then%20choose%20wired%20settings.&text=In%20the%20next%20window%2C%20Choose,gateway%20and%20DNS%20Server%20IP) has images to help you through the process):
+1. Before anything else, on your computer, click on the arrow down at the top right of your screen.
+2. Then click on **Settings**. A **Settings** window should open.
+3. On the **Settings** window, go to **Network**. You should see all the Ethernet Ports of your computer under **Wired**.
+4. Identify (both on your physical computer, and in the **Wired** section) the 2 Ethernet Ports on which you will connect your 2 LiDARs.
 
-If you want to change internal parameters of a Hesai LiDAR: 
-* Open your favorite web browser (Chrome or Firefox are recommended),
-* Enter the IP address of your Hesai LiDAR (if it has never been changed, the LiDAR IP address is **192.168.1.201**),
-* Go to the *Settings* page,
-* Change the *Control IP/IPv4 Address* to modify the LiDAR's IP Address,
-* Change the *Settings/LiDAR Destination Port* to modify the LiDAR's Destination Port.
+#### First LiDAR (lidar_0)
+5. Plug your first LiDAR (lidar_0) into its Ethernet Port. You should now see one of your Ethernet Port as **Connected** in the **Wired** section. (You may see a pop window saying *"Connection failed. Activation of network connection failed"*. Do not worry, the Ethernet Ports configuration will fix it.)
+6. Click on the "gear" icon of this Ethernet Port. A new window should open.
+7. Choose the **IPv4** Tab, then choose **Manual** for **IPv4 Method**.
+8. Then, in **Adresses** list, fill the first line with:
+   - Address = 192.168.1.100
+   - Netmask = 255.255.255.0
+   - Gateway = 192.168.1.1
+9. Click on **Apply** to save the changes. The window should close.
+10. Disable and enable the interface once to assign the IP address to the interface (toggle the purple button).
+11. Open Chrome or Firefox, and enter **192.168.1.201** in the URL bar (this is the default IP address of Hesai LiDARs, and will be the final IP address of your first LiDAR lidar_0).
+12. The LiDAR web interface should open. Go to the **Settings** tab, and verify that:
+    - Under *Control IPv4*, **IPv4 Address = 192.168.1.201**
+    - Under *Settings*, **Lidar Destination Port = 2368**
+13. If the precedent information are verified, the configuration of your first LiDAR is completed!
 
-### Configure your Ethernet ports
-Usually, Linux configure automatically the Ethernet ports of your computer and assigns randomly the IP address of the ports.  
-But as explained in [XT32_User_Manual_X01-en-220410.pdf](documentation%2FXT32_User_Manual_X01-en-220410.pdf) at page 31, you need to configure the IP of the Ethernet ports of your PC to connect to the LiDARs.  
-So your Ethernet ports IP must be static. To do so, follow the instructions from [this link](https://www.linuxtechi.com/assign-static-ip-address-ubuntu-20-04-lts/#:~:text=Configuring%20a%20static%20ip%20address,and%20then%20choose%20wired%20settings.&text=In%20the%20next%20window%2C%20Choose,gateway%20and%20DNS%20Server%20IP).  
-
-For the lidar_0 ethernet port, use:
-* IPv4 Method = **Manual**
-* Addresses/Address = **192.168.1.100**
-* Addresses/Netmask = **255.255.255.0**
-* Keep Addresses/Gateway empty  
-
-For the lidar_1 ethernet port, use:
-* IPv4 Method = **Manual**
-* Addresses/Address = **192.168.2.100**
-* Addresses/Netmask = **255.255.255.0**
-* Keep Addresses/Gateway empty
-
-
-*NOTE 1: Be careful to plug the LiDARs to Ethernet ports configured for them.*  
-*NOTE 2: If your Ethernet port IP is still resetting to **Automatic**, check if **/etc/netplan/01-netcfg.yaml** exists. If yes, remove it using:*
+#### Second LiDAR (lidar_1)
+If the internal IP address of your LiDAR has already been changed, directly go to the **19th step**.  
+14. If the internal IP address and Destination Port of your LiDAR have never been changed, it must still be **192.168.1.201** and **2368**. We will have to change it. 
+15. Unplug your first LiDAR, and plug your second LiDAR into the same Ethernet port.
+16. Open Chrome or Firefox, and enter **192.168.1.201** in the URL bar.
+17. The LiDAR web interface should open. Go to the **Settings** tab, and do the next changes:
+  - Under *Control IPv4*, **IPv4 Address = 192.168.2.201**
+  - Under *Settings*, **Lidar Destination Port = 2369**
+18. Click on the **Save** button, and close your web browser.
+19. Plug your second LiDAR (lidar_1) into its Ethernet Port. You should now see a second Ethernet Port as **Connected** in the **Wired** section. (You may see a pop window saying *"Connection failed. Activation of network connection failed"*. Do not worry, the Ethernet Ports configuration will fix it.)
+20. Click on the "gear" icon of this Ethernet Port. A new window should open. 
+21. Choose the **IPv4** Tab, then choose **Manual** for **IPv4 Method**. 
+22. Then, in **Adresses** list, fill the first line with:
+  - Address = 192.168.2.100
+  - Netmask = 255.255.255.0
+  - Gateway = 192.168.2.1 
+23. Click on **Apply** to save the changes. The window should close. 
+24. Disable and enable the interface once to assign the IP address to the interface (toggle the purple button). 
+25. Open Chrome or Firefox, and enter **192.168.2.201** in the URL bar (this is the final IP address of your second LiDAR lidar_1). 
+26. The LiDAR web interface should open. Go to the **Settings** tab, and verify that:
+  - Under *Control IPv4*, **IPv4 Address = 192.168.2.201**
+  - Under *Settings*, **Lidar Destination Port = 2369**
+27. If the precedent information are verified, the configuration of your second LiDAR is completed!
+28. In order to avoid your computer to automatically reset your Ethernet Ports configuration, run this command in a terminal:
+```console
+  sudo rm /etc/netplan/01-netcfg.yaml
 ```
-sudo rm 01-netcfg.yaml
-```
+*NOTE: It is possible that this file does not exist.*
 
+### Launch files configuration
+Even if multiple launch exist in */RosScan/Projects/Hesai_General_ROS/launch*. Only 2 are useful for us:
+- **dual_hesai_lidar.launch**: To operate two Hesai LiDARs using ROS.
+- **mono_camera.launch**: To operate one Hesai LiDAR using ROS.
 
+No parameters normally need to be tuned, as they are already well configured, but here are the important ones:
+- **lidar_0_server_ip**: IP address of the lidar_0. Should be **192.168.1.201**.
+- **lidar_1_server_ip**: IP address of the lidar_1. Should be **192.168.2.201**.
+- **lidar_0_recv_port**: Destination Port of the lidar_0. Should be **2368**.
+- **lidar_1_recv_port**: Destination Port of the lidar_1. Should be **2369**.
+- **open_rviz**: If *True*, open Rviz configured to observe the LiDARs data.
 
+___
 ## About the project
 HesaiLidar_General_ROS project includes the ROS Driver for：  
 **PandarQT/Pandar64/Pandar40P/Pandar20A/Pandar20B/Pandar40M/PandarXT**  

@@ -4,7 +4,7 @@
 
 <launch>
     <!-- Args -->
-    <arg name="open_rviz"           default="true"/>
+    <arg name="open_rviz"           default="false"/>
 
     <!-- LiDAR 1 parameters -->
     <arg name="lidar_0_namespace"   default="lidar_0_hesai"/>
