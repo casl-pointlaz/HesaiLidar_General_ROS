@@ -16,9 +16,6 @@ class HesaiLidarClient
 public:
   HesaiLidarClient(ros::NodeHandle node, ros::NodeHandle nh)
   {
-    // Subscriber (added by agruet) (name to validate with CASL)
-    scannerStateSubscriber = node.subscribe("/lazarrus/scanner_state", 1000, &HesaiLidarClient::scannerStateCallback, this);
-
     // Publishers
     lidarPublisher = node.advertise<sensor_msgs::PointCloud2>("pandar", 10);
     packetPublisher = node.advertise<hesai_lidar::PandarScan>("pandar_packets",10);
@@ -159,24 +156,8 @@ public:
     hsdk->PushScanPacket(scan);
   }
 
-  // Added by agruet (type of scanner_state to validate with CASL)
-  void scannerStateCallback(const std_msgs::String::ConstPtr& scanner_state_msg)
-  {
-      if((scanner_state_msg->data == "triggering" || scanner_state_msg->data == "recording") && standby)
-      {
-          hsdk->StandBy(false);
-          hsdk->Start();
-          standby = false;
-      }
-      else if (!standby && scanner_state_msg->data != "triggering" && scanner_state_msg->data != "recording")
-      {
-          hsdk->StandBy(true);
-          standby = true;
-      }
-  }
 
 private:
-  ros::Subscriber scannerStateSubscriber;       // Added by agruet
   ros::Publisher lidarPublisher;
   ros::Publisher packetPublisher;
   PandarGeneralSDK* hsdk;
