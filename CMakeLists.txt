@@ -58,6 +58,7 @@ target_link_libraries(PandarGeneral
     Boost::thread
     pcap
 )
+add_dependencies(PandarGeneral ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ###PandarGeneralSDK
 add_library(PandarGeneralSDK SHARED
