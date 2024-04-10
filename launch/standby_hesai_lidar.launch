@@ -1,6 +1,5 @@
 <launch>
 	<!-- Args -->
-	<arg name="open_rviz"					default="true"/>		<!-- Added by agruet -->
 	<arg name="pcap_file"  					default=""/>
 	<arg name="server_ip" 					default="192.168.1.201"/>
 	<arg name="lidar_recv_port"  			default="2368"/>
@@ -20,10 +19,9 @@
 	<arg name="coordinate_correction_flag"  default="false"/>
 	<arg name="fixed_frame"  				default=""/>
 	<arg name="target_frame"  				default=""/>
-	<arg name="standby"						default="false"/>		<!-- Added by agruet -->
 
 	<!-- Launch hesai_lidar node -->
-	<node pkg="hesai_lidar" name="hesai_lidar" ns="$(arg namespace)" type="hesai_lidar_node" output="screen" >
+	<node pkg="hesai_lidar" name="standby_hesai_lidar" ns="$(arg namespace)" type="standby_hesai_lidar_node" output="screen" >
 		<param name="pcap_file" 					type="string" 	value="$(arg pcap_file)"/>
 		<param name="server_ip" 					type="string" 	value="$(arg server_ip)"/>
 		<param name="lidar_recv_port"  				type="int" 		value="$(arg lidar_recv_port)"/>
@@ -40,13 +38,6 @@
 		<param name="coordinate_correction_flag"  	type="bool" 	value="$(arg coordinate_correction_flag)"/>
 		<param name="fixed_frame"  					type="string" 	value="$(arg fixed_frame)"/>
 		<param name="target_frame"  				type="string" 	value="$(arg target_frame)"/>
-		<param name="standby"						type="bool"		value="$(arg standby)"/>		<!-- Added by agruet -->
 	</node>
-
-	<!-- Added by agruet -->
-	<!-- Launch Rviz if open_rviz == true -->
-	<group if="$(arg open_rviz)">
-		<node type="rviz" name="rviz" pkg="rviz" args="-d $(find hesai_lidar)/rviz/hesai_lidar_config.rviz" />
-	</group>
 
 </launch>

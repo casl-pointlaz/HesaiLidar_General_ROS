@@ -78,9 +78,11 @@ If the internal IP address of your LiDAR has already been changed, directly go t
 *NOTE: It is possible that this file does not exist.*
 
 ### Launch files configuration
-Even if multiple launch exist in */RosScan/Projects/Hesai_General_ROS/launch*. Only 2 are useful for us:
+Even if multiple launch exist in */RosScan/Projects/Hesai_General_ROS/launch*. Only 4 are useful for us:
 - **dual_hesai_lidar.launch**: To operate two Hesai LiDARs using ROS.
-- **mono_camera.launch**: To operate one Hesai LiDAR using ROS.
+- **hesai_lidar.launch**: To operate one Hesai LiDAR using ROS.
+- **standby_dual_hesai_lidar.launch**: To put two LiDARs in standby mode when booting.
+- **standby_hesai_lidar.launch**: To put one LiDAR in standby mode when booting.
 
 No parameters normally need to be tuned, as they are already well configured, but here are the important ones:
 - **lidar_0_server_ip**: IP address of the lidar_0. Should be **192.168.1.201**.

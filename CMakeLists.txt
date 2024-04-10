@@ -86,7 +86,7 @@ target_link_libraries(PandarGeneralSDK
     pcap
 )
 
-###hesai node
+# hesai_lidar_node
 add_executable(hesai_lidar_node
     src/main.cc
 )
@@ -103,6 +103,25 @@ target_link_libraries(hesai_lidar_node
     ${catkin_LIBRARIES}
     ${PCL_IO_LIBRARIES}
     PandarGeneralSDK
+)
+
+# standby_hesai_lidar_node
+add_executable(standby_hesai_lidar_node
+        src/standby_hesai_lidar_node.cpp
+)
+
+target_include_directories(standby_hesai_lidar_node PRIVATE
+        src/HesaiLidar_General_SDK/include
+        src/HesaiLidar_General_SDK/src/PandarGeneralRaw/include
+        ${PCL_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
+        ${Boost_INCLUDE_DIRS}
+)
+
+target_link_libraries(standby_hesai_lidar_node
+        ${catkin_LIBRARIES}
+        ${PCL_IO_LIBRARIES}
+        PandarGeneralSDK
 )
 
 add_library(cloud_nodelet src/cloud_nodelet.cc)

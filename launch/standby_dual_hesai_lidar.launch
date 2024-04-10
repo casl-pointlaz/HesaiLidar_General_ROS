@@ -1,0 +1,80 @@
+<!-- standby_dual_hesai_lidar.launch -->
+<!-- Put the two Hesai LiDARs in Standby Mode -->
+<!-- Created by agruet -->
+
+<launch>
+    <!-- LiDAR 1 parameters -->
+    <arg name="lidar_0_namespace"   default="lidar_0_hesai"/>
+    <arg name="lidar_0_server_ip"   default="192.168.1.201"/>
+    <arg name="lidar_0_recv_port"   default="2368"/>
+    <arg name="lidar_0_gps_port"    default="10110"/>
+    <arg name="lidar_0_frame_id"    default="lidar_0"/>
+
+    <!-- LiDAR 2 parameters -->
+    <arg name="lidar_1_namespace"   default="lidar_1_hesai"/>
+    <arg name="lidar_1_server_ip"   default="192.168.2.201"/>
+    <arg name="lidar_1_recv_port"   default="2369"/>
+    <arg name="lidar_1_gps_port"    default="10110"/>
+    <arg name="lidar_1_frame_id"    default="lidar_1"/>
+
+    <!-- Common parameters -->
+    <arg name="pcap_file"                   value=""/>
+    <arg name="start_angle"                 default="0"/>
+    <arg name="lidar_type"                  default="PandarXT-32"/>
+    <arg name="pcldata_type"                default="0"/>
+    <arg name="publish_type"                default="points"/>
+    <arg name="timestamp_type"              default=""/>
+    <arg name="data_type"                   default=""/>
+    <arg name="lidar_correction_file"       default="$(find hesai_lidar)/config/PandarXT-32.csv"/>
+    <arg name="multicast_ip"                default=""/>
+    <arg name="coordinate_correction_flag"  default="false"/>
+    <arg name="fixed_frame"                 default=""/>
+    <arg name="target_frame"                default=""/>
+
+    <!-- lidar_0 -->
+    <include file="$(find hesai_lidar)/launch/standby_hesai_lidar.launch">
+        <!-- lidar_0 parameters -->
+        <arg name="namespace"                   value="$(arg lidar_0_namespace)"/>
+        <arg name="server_ip"                   value="$(arg lidar_0_server_ip)"/>
+        <arg name="lidar_recv_port"             value="$(arg lidar_0_recv_port)"/>
+        <arg name="gps_port"                    value="$(arg lidar_0_gps_port)"/>
+        <arg name="frame_id"                    value="$(arg lidar_0_frame_id)"/>
+        <!-- Common parameters -->
+        <arg name="pcap_file"                   value="$(arg pcap_file)"/>
+        <arg name="start_angle"                 value="$(arg start_angle)"/>
+        <arg name="lidar_type"                  value="$(arg lidar_type)"/>
+        <arg name="pcldata_type"                value="$(arg pcldata_type)"/>
+        <arg name="publish_type"                value="$(arg publish_type)"/>
+        <arg name="timestamp_type"              value="$(arg timestamp_type)"/>
+        <arg name="data_type"                   value="$(arg data_type)"/>
+        <arg name="lidar_correction_file"       value="$(arg lidar_correction_file)"/>
+        <arg name="multicast_ip"                value="$(arg multicast_ip)"/>
+        <arg name="coordinate_correction_flag"  value="$(arg coordinate_correction_flag)"/>
+        <arg name="fixed_frame"                 value="$(arg fixed_frame)"/>
+        <arg name="target_frame"                value="$(arg target_frame)"/>
+    </include>
+
+    <!-- lidar_1 -->
+    <include file="$(find hesai_lidar)/launch/standby_hesai_lidar.launch">
+        <!-- lidar_1 parameters -->
+        <arg name="namespace"                   value="$(arg lidar_1_namespace)"/>
+        <arg name="server_ip"                   value="$(arg lidar_1_server_ip)"/>
+        <arg name="lidar_recv_port"             value="$(arg lidar_1_recv_port)"/>
+        <arg name="gps_port"                    value="$(arg lidar_1_gps_port)"/>
+        <arg name="frame_id"                    value="$(arg lidar_1_frame_id)"/>
+        <!-- Common parameters -->
+        <arg name="pcap_file"                   value="$(arg pcap_file)"/>
+        <arg name="start_angle"                 value="$(arg start_angle)"/>
+        <arg name="lidar_type"                  value="$(arg lidar_type)"/>
+        <arg name="pcldata_type"                value="$(arg pcldata_type)"/>
+        <arg name="publish_type"                value="$(arg publish_type)"/>
+        <arg name="timestamp_type"              value="$(arg timestamp_type)"/>
+        <arg name="data_type"                   value="$(arg data_type)"/>
+        <arg name="lidar_correction_file"       value="$(arg lidar_correction_file)"/>
+        <arg name="multicast_ip"                value="$(arg multicast_ip)"/>
+        <arg name="coordinate_correction_flag"  value="$(arg coordinate_correction_flag)"/>
+        <arg name="fixed_frame"                 value="$(arg fixed_frame)"/>
+        <arg name="target_frame"                value="$(arg target_frame)"/>
+    </include>
+
+</launch>
