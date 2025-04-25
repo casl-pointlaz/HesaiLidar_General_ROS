@@ -122,7 +122,7 @@ public:
                                       fixedFrame);
 
     }
-
+    hsdk->SetReturnMode();
     hsdk->Start();
   }
 

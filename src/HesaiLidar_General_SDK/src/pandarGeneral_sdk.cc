@@ -143,6 +143,30 @@ void PandarGeneralSDK::StandBy(bool standBy)
     }
 }
 
+// Added by aguenette
+void PandarGeneralSDK::SetReturnMode()
+{
+    if (!tcp_command_client_)
+    {
+        return;
+    }
+    std::cout << "Changing Return Mode for Strongest Return" << std::endl;
+
+    // Values found in 'HesaiLidar_General_ROS/documentation/PandarXT_User_Manual_X01-en-240220.pdf' (p.45)
+    // 0x33 - First Return        0x39 - Dual Return (Last, Strongest)
+    // 0x37 - Strongest Return    0x3B - Dual Return (Last, First)
+    // 0x38 - Last Return         0x3C - Dual Return (First, Strongest)
+    unsigned char return_mode[1] = { 0x37 };
+
+    int32_t ret = 0;
+    ret = TcpCommandSetReturnMode(tcp_command_client_, return_mode, sizeof(return_mode));
+    if (ret != 0) {
+      std::cout << "Changing Return Mode for Strongest Return failed" << std::endl;
+    } else {
+      std::cout << "Changing Return Mode for Strongest Return succeeded" << std::endl;
+    }
+}
+
 void PandarGeneralSDK::GetCalibrationFromDevice() {
   // LOG_FUNC();
   if (!tcp_command_client_) {
