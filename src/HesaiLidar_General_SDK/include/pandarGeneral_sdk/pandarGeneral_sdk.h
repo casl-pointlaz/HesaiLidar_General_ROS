@@ -80,8 +80,8 @@ class PandarGeneralSDK {
   void GetCalibrationFromDevice();
   void Start();
   void Stop();
-  void StandBy(bool standBy);       // Added by agruet
-  void SetReturnMode();             // Added by aguenette
+  void StandBy(bool standBy);   // Added by agruet
+  void SetReturnMode(const std::string& return_mode, unsigned char return_mode_data);   // Added by aguenette
   void PushScanPacket(hesai_lidar::PandarScanPtr scan);
 
  private:
