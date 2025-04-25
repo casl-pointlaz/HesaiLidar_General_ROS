@@ -144,26 +144,20 @@ void PandarGeneralSDK::StandBy(bool standBy)
 }
 
 // Added by aguenette
-void PandarGeneralSDK::SetReturnMode()
+void PandarGeneralSDK::SetReturnMode(const std::string& return_mode, unsigned char return_mode_data)
 {
     if (!tcp_command_client_)
     {
         return;
     }
-    std::cout << "Changing Return Mode for Strongest Return" << std::endl;
 
-    // Values found in 'HesaiLidar_General_ROS/documentation/PandarXT_User_Manual_X01-en-240220.pdf' (p.45)
-    // 0x33 - First Return        0x39 - Dual Return (Last, Strongest)
-    // 0x37 - Strongest Return    0x3B - Dual Return (Last, First)
-    // 0x38 - Last Return         0x3C - Dual Return (First, Strongest)
-    unsigned char return_mode[1] = { 0x37 };
-
+    unsigned char buffer[1] = { return_mode_data };
     int32_t ret = 0;
-    ret = TcpCommandSetReturnMode(tcp_command_client_, return_mode, sizeof(return_mode));
+    ret = TcpCommandSetReturnMode(tcp_command_client_, buffer, sizeof(buffer));
     if (ret != 0) {
-      std::cout << "Changing Return Mode for Strongest Return failed" << std::endl;
+      std::cout << "Changing Return Mode for " << return_mode << " failed." << std::endl;
     } else {
-      std::cout << "Changing Return Mode for Strongest Return succeeded" << std::endl;
+      std::cout << "Changing Return Mode for " << return_mode << " succeeded" << std::endl;
     }
 }
 

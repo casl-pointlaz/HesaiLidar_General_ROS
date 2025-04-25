@@ -1,13 +1,18 @@
+#include "pandarGeneral_sdk/pandarGeneral_sdk.h"
+
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <std_msgs/String.h>      // Added by agruet
+
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
-#include "pandarGeneral_sdk/pandarGeneral_sdk.h"
+
 #include <fstream>
-#include <std_msgs/String.h>      // Added by agruet
-// #define PRINT_FLAG 
+#include <unordered_map>
+
+// #define PRINT_FLAG
 
 using namespace std;
 
@@ -34,6 +39,8 @@ public:
     bool coordinateCorrectionFlag;
     string targetFrame;
     string fixedFrame;
+    bool standby = true;  // Added by agruet
+    string returnMode;    // Added by aguenette
 
     nh.getParam("pcap_file", pcapFile);
     nh.getParam("server_ip", serverIp);
@@ -51,8 +58,9 @@ public:
     nh.getParam("coordinate_correction_flag", coordinateCorrectionFlag);
     nh.getParam("target_frame", targetFrame);
     nh.getParam("fixed_frame", fixedFrame);
-    nh.getParam("standby", standby);        // Added by agruet
-  
+    nh.getParam("standby", standby);         // Added by agruet
+    nh.getParam("return_mode", returnMode);  // Added by aguenette
+
     if(!pcapFile.empty()){
           hsdk = new PandarGeneralSDK(pcapFile,
                                       boost::bind(&HesaiLidarClient::lidarCallback, this, _1, _2, _3),
@@ -122,7 +130,16 @@ public:
                                       fixedFrame);
 
     }
-    hsdk->SetReturnMode();
+
+    if (returnModes.find(returnMode) != returnModes.end())
+    {
+      hsdk->SetReturnMode(returnMode, returnModes.at(returnMode));
+    } else {
+      ROS_ERROR_STREAM("Invalid return mode: " << returnMode << ". Using 'strongest' return mode instead.");
+      ROS_WARN("The possible values are:\n- 'first'\n- 'strongest'\n- 'last'\n- 'last+strongest'\n- 'last+first'\n- 'first+strongest'");
+      hsdk->SetReturnMode(returnMode, returnModes.at("strongest"));
+    }
+
     hsdk->Start();
   }
 
@@ -142,7 +159,7 @@ public:
       lidarPublisher.publish(output);
 #ifdef PRINT_FLAG
         printf("timestamp: %f, point size: %ld.\n",timestamp, cld->points.size());
-#endif        
+#endif
     }
     if(m_sPublishType == "both" || m_sPublishType == "raw"){
       packetPublisher.publish(scan);
@@ -155,7 +172,7 @@ public:
   void gpsCallback(int timestamp) {
 #ifdef PRINT_FLAG
       printf("gps: %d\n", timestamp);
-#endif      
+#endif
   }
 
   void scanCallback(const hesai_lidar::PandarScanPtr scan)
@@ -172,7 +189,23 @@ private:
   string m_sPublishType;
   string m_sTimestampType;
   ros::Subscriber packetSubscriber;
-  bool standby = true;       // Added by agruet
+
+  // Return mode values were found in 'HesaiLidar_General_ROS/documentation/PandarXT_User_Manual_X01-en-240220.pdf' (p.45)
+  // 0x33 - First Return
+  // 0x37 - Strongest Return
+  // 0x38 - Last Return
+  // 0x39 - Dual Return (Last, Strongest)
+  // 0x3B - Dual Return (Last, First)
+  // 0x3C - Dual Return (First, Strongest)
+  const std::unordered_map<std::string, unsigned char> returnModes
+  {
+    {"first",           0x33},
+    {"strongest",       0x37},
+    {"last",            0x38},
+    {"last+strongest",  0x39},
+    {"last+first",      0x3B},
+    {"first+strongest", 0x3C}
+  };
 };
 
 int main(int argc, char **argv)
@@ -183,5 +216,6 @@ int main(int argc, char **argv)
   HesaiLidarClient pandarClient(node, nh);
 
   ros::spin();
+
   return 0;
 }
