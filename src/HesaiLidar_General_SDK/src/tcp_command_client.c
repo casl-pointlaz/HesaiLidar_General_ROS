@@ -386,4 +386,35 @@ PTC_ErrCode TcpCommandSetStandby(const void* handle, int on)
     return cmd.header.ret_code;
 }
 
+// Added by aguenette
+PTC_ErrCode TcpCommandSetReturnMode(const void* handle, unsigned char* return_mode, unsigned int len) {
+    if (!handle) {
+    printf("Bad Parameter!!!\n");
+    return PTC_ERROR_BAD_PARAMETER;
+    }
+    TcpCommandClient* client = (TcpCommandClient*)handle;
+
+    TC_Command cmd;
+    memset(&cmd, 0, sizeof(TC_Command));
+    cmd.header.cmd = 0x1E; // Command value found here: https://github.com/HesaiTechnology/HesaiLidar_SDK_2.0/blob/76cb882dcdaa54e48feca1bbdfba8caae91c785a/libhesai/PtcClient/include/ptc_client.h#L55
+    cmd.header.len = len;
+    cmd.data = return_mode;
+
+    PTC_ErrCode errorCode = tcpCommandClient_SendCmd(client, &cmd);
+
+    if (errorCode != PTC_ERROR_NO_ERROR) {
+      free(cmd.data);
+      return errorCode;
+    }
+
+    free(cmd.data);
+
+    if (cmd.ret_data) {
+      // useless data;
+      free(cmd.ret_data);
+    }
+
+    return cmd.header.ret_code;
+}
+
 void TcpCommandClientDestroy(const void* handle) {}

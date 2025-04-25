@@ -81,6 +81,7 @@ class PandarGeneralSDK {
   void Start();
   void Stop();
   void StandBy(bool standBy);       // Added by agruet
+  void SetReturnMode();             // Added by aguenette
   void PushScanPacket(hesai_lidar::PandarScanPtr scan);
 
  private:

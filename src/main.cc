@@ -7,7 +7,7 @@
 #include "pandarGeneral_sdk/pandarGeneral_sdk.h"
 #include <fstream>
 #include <std_msgs/String.h>      // Added by agruet
-// #define PRINT_FLAG 
+// #define PRINT_FLAG
 
 using namespace std;
 
@@ -52,7 +52,7 @@ public:
     nh.getParam("target_frame", targetFrame);
     nh.getParam("fixed_frame", fixedFrame);
     nh.getParam("standby", standby);        // Added by agruet
-  
+
     if(!pcapFile.empty()){
       hsdk = new PandarGeneralSDK(pcapFile, boost::bind(&HesaiLidarClient::lidarCallback, this, _1, _2, _3), \
       static_cast<int>(startAngle * 100 + 0.5), 0, pclDataType, lidarType, frameId, m_sTimestampType, lidarCorrectionFile, \
@@ -107,6 +107,7 @@ public:
       }
       else
       {
+        hsdk->SetReturnMode();
         hsdk->StandBy(false);
         hsdk->Start();
       }
@@ -134,7 +135,7 @@ public:
       lidarPublisher.publish(output);
 #ifdef PRINT_FLAG
         printf("timestamp: %f, point size: %ld.\n",timestamp, cld->points.size());
-#endif        
+#endif
     }
     if(m_sPublishType == "both" || m_sPublishType == "raw"){
       packetPublisher.publish(scan);
@@ -147,7 +148,7 @@ public:
   void gpsCallback(int timestamp) {
 #ifdef PRINT_FLAG
       printf("gps: %d\n", timestamp);
-#endif      
+#endif
   }
 
   void scanCallback(const hesai_lidar::PandarScanPtr scan)
