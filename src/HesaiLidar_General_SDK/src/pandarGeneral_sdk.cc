@@ -151,13 +151,12 @@ void PandarGeneralSDK::SetReturnMode(const std::string& return_mode, unsigned ch
         return;
     }
 
-    unsigned char buffer[1] = { return_mode_data };
     int32_t ret = 0;
-    ret = TcpCommandSetReturnMode(tcp_command_client_, buffer, sizeof(buffer));
+    ret = TcpCommandSetReturnMode(tcp_command_client_, return_mode_data);
     if (ret != 0) {
-      std::cout << "Changing Return Mode for " << return_mode << " failed." << std::endl;
+      std::cout << "Changing Return Mode for '" << return_mode << "' failed.\n" << std::endl;
     } else {
-      std::cout << "Changing Return Mode for " << return_mode << " succeeded" << std::endl;
+      std::cout << "Changing Return Mode for '" << return_mode << "' succeeded.\n" << std::endl;
     }
 }
 

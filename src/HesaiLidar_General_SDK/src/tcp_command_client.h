@@ -61,7 +61,7 @@ PTC_ErrCode TcpCommandGetLidarCalibration(const void* handle, char** buffer,
                                           unsigned int* len);
 PTC_ErrCode TcpCommandResetCalibration(const void* handle);
 PTC_ErrCode TcpCommandSetStandby(const void* handle, int on); // Added by agruet
-PTC_ErrCode TcpCommandSetReturnMode(const void* handle, unsigned char* return_mode, unsigned int len); // Added by aguenette
+PTC_ErrCode TcpCommandSetReturnMode(const void* handle, unsigned char return_mode); // Added by aguenette
 void TcpCommandClientDestroy(const void* handle);
 
 #ifdef __cplusplus
