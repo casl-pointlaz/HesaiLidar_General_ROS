@@ -153,11 +153,8 @@ void PandarGeneralSDK::SetReturnMode(const std::string& return_mode, unsigned ch
 
     int32_t ret = 0;
     ret = TcpCommandSetReturnMode(tcp_command_client_, return_mode_data);
-    if (ret != 0) {
-      std::cout << "Changing Return Mode for '" << return_mode << "' failed.\n" << std::endl;
-    } else {
-      std::cout << "Changing Return Mode for '" << return_mode << "' succeeded.\n" << std::endl;
-    }
+
+    std::cout << "Changing Return Mode for '" << return_mode << (ret == 0 ? "' succeeded." : "' failed.")  << std::endl;
 }
 
 void PandarGeneralSDK::GetCalibrationFromDevice() {

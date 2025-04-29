@@ -133,9 +133,10 @@ public:
 
     if (returnModes.find(returnMode) != returnModes.end())
     {
+      ROS_INFO_STREAM("Setting LiDAR return mode to '" << returnMode << " return'.");
       hsdk->SetReturnMode(returnMode, returnModes.at(returnMode));
     } else {
-      ROS_ERROR_STREAM("Invalid return mode: " << returnMode << ". Using 'strongest' return mode instead.");
+      ROS_WARN_STREAM("Invalid return mode: " << returnMode << ". Using 'strongest return' mode instead.");
       ROS_WARN("The possible values are:\n- 'last'\n- 'strongest'\n- 'last+strongest'\n- 'first'\n- 'first+last'\n- 'first+strongest'");
       hsdk->SetReturnMode(returnMode, returnModes.at("strongest"));
     }
