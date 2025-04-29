@@ -251,5 +251,5 @@ $ roslaunch hesai_lidar cloud_nodelet.launch lidar_type:="PandarXTM" frame_id:="
 |fixed_frame|default ""|
 |target_frame|default ""|
 |standby|default "false"|
-|return_mode|default "strongest", Possible values: "first", "strongest", "last", "last+strongest", "last+first" and "first+strongest"|
+|return_mode|default "strongest", Possible values: "last", "strongest", "last+strongest", "first", "first+last" and "first+strongest"|
 

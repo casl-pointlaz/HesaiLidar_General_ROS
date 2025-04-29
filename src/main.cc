@@ -115,7 +115,7 @@ public:
         hsdk->SetReturnMode(returnMode, returnModes.at(returnMode));
       } else {
         ROS_ERROR_STREAM("Invalid return mode: " << returnMode << ". Using 'strongest' return mode instead.");
-        ROS_WARN("The possible values are:\n- 'first'\n- 'strongest'\n- 'last'\n- 'last+strongest'\n- 'last+first'\n- 'first+strongest'");
+        ROS_WARN("The possible values are:\n- 'last'\n- 'strongest'\n- 'last+strongest'\n- 'first'\n- 'first+last'\n- 'first+strongest'");
         hsdk->SetReturnMode(returnMode, returnModes.at("strongest"));
       }
 
@@ -134,7 +134,6 @@ public:
     {
       printf("create sdk fail\n");
     }
-
   }
 
   // Added by agruet
@@ -184,21 +183,14 @@ private:
   string m_sTimestampType;
   ros::Subscriber packetSubscriber;
 
-  // Return mode values were found in 'HesaiLidar_General_ROS/documentation/PandarXT_User_Manual_X01-en-240220.pdf' (p.45)
-  // 0x33 - First Return
-  // 0x37 - Strongest Return
-  // 0x38 - Last Return
-  // 0x39 - Dual Return (Last, Strongest)
-  // 0x3B - Dual Return (Last, First)
-  // 0x3C - Dual Return (First, Strongest)
   const std::unordered_map<std::string, unsigned char> returnModes
   {
-    {"first",           0x33},
-    {"strongest",       0x37},
-    {"last",            0x38},
-    {"last+strongest",  0x39},
-    {"last+first",      0x3B},
-    {"first+strongest", 0x3C}
+    {"last",            0x00},
+    {"strongest",       0x01},
+    {"last+strongest",  0x02},
+    {"first",           0x03},
+    {"first+last",      0x04},
+    {"first+strongest", 0x05}
   };
 };
 
