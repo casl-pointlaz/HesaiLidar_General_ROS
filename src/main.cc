@@ -131,6 +131,8 @@ public:
 
     }
 
+    sleep(30);
+
     if (returnModes.find(returnMode) != returnModes.end())
     {
       ROS_INFO_STREAM("Setting LiDAR return mode to '" << returnMode << " return'.");
