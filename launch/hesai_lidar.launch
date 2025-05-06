@@ -21,6 +21,7 @@
 	<arg name="fixed_frame"  				default=""/>
 	<arg name="target_frame"  				default=""/>
 	<arg name="standby"						default="false"/>		<!-- Added by agruet -->
+	<arg name="return_mode"					default="strongest"/>	<!-- Added by aguenette -->
 
 	<!-- Launch hesai_lidar node -->
 	<node pkg="hesai_lidar" name="hesai_lidar" ns="$(arg namespace)" type="hesai_lidar_node" output="screen" >
@@ -41,6 +42,7 @@
 		<param name="fixed_frame"  					type="string" 	value="$(arg fixed_frame)"/>
 		<param name="target_frame"  				type="string" 	value="$(arg target_frame)"/>
 		<param name="standby"						type="bool"		value="$(arg standby)"/>		<!-- Added by agruet -->
+		<param name="return_mode"					type="string"	value="$(arg return_mode)"/>	<!-- Added by aguenette -->
 	</node>
 
 	<!-- Added by agruet -->

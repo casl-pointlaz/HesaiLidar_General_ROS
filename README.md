@@ -248,4 +248,8 @@ $ roslaunch hesai_lidar cloud_nodelet.launch lidar_type:="PandarXTM" frame_id:="
 |lidar_correction_file|Path of calibration file, will be used when not able to get calibration file from a connected Liar|
 |multicast_ip|The multicast IP address of connected Lidar, will be used to get udp packets from multicast ip address|
 |coordinate_correction_flag|default "false":Disable coordinate correction "true":Enable coordinate correction|
+|fixed_frame|default ""|
+|target_frame|default ""|
+|standby|default "false"|
+|return_mode|default "strongest", Possible values: "last", "strongest", "last+strongest", "first", "first+last" and "first+strongest"|
 

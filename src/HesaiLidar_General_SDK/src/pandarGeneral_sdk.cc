@@ -143,6 +143,20 @@ void PandarGeneralSDK::StandBy(bool standBy)
     }
 }
 
+// Added by aguenette
+void PandarGeneralSDK::SetReturnMode(const std::string& return_mode, unsigned char return_mode_data)
+{
+    if (!tcp_command_client_)
+    {
+        return;
+    }
+
+    int32_t ret = 0;
+    ret = TcpCommandSetReturnMode(tcp_command_client_, return_mode_data);
+
+    std::cout << "Changing Return Mode for '" << return_mode << (ret == 0 ? "' succeeded." : "' failed.")  << std::endl;
+}
+
 void PandarGeneralSDK::GetCalibrationFromDevice() {
   // LOG_FUNC();
   if (!tcp_command_client_) {
