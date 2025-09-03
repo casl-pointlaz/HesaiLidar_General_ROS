@@ -423,4 +423,42 @@ PTC_ErrCode TcpCommandSetReturnMode(const void* handle, unsigned char return_mod
     return cmd.header.ret_code;
 }
 
+// Added by aguenette
+PTC_ErrCode TcpCommandSetSpinSpeed(const void* handle, uint32_t spin_speed) {
+    printf("TcpCommandSetSpinSpeed\n");
+
+    if (!handle) {
+        printf("Bad Parameter!!!\n");
+        return PTC_ERROR_BAD_PARAMETER;
+    }
+
+    TcpCommandClient* client = (TcpCommandClient*)handle;
+
+    uint32_t len = 2*sizeof(uint8_t);
+    uint8_t* buffer = (uint8_t*)malloc(len);
+    buffer[0] = (uint8_t)(spin_speed >> 8);
+    buffer[1] = (uint8_t)(spin_speed);
+
+    TC_Command cmd;
+    memset(&cmd, 0, sizeof(TC_Command));
+    cmd.header.cmd = 0x17; // Command value found here: https://github.com/HesaiTechnology/HesaiLidar_SDK_2.0/blob/76cb882dcdaa54e48feca1bbdfba8caae91c785a/libhesai/PtcClient/include/ptc_client.h#L58
+    cmd.header.len = len;
+    cmd.data = buffer;
+
+    PTC_ErrCode errorCode = tcpCommandClient_SendCmd(client, &cmd);
+
+    free(cmd.data);
+
+    if (errorCode != PTC_ERROR_NO_ERROR) {
+        return errorCode;
+    }
+
+    if (cmd.ret_data) {
+        // useless data;
+        free(cmd.ret_data);
+    }
+
+    return cmd.header.ret_code;
+}
+
 void TcpCommandClientDestroy(const void* handle) {}
