@@ -42,6 +42,7 @@ public:
     string fixedFrame;
     bool standby = true;  // Added by agruet
     string returnMode;    // Added by aguenette
+    int frequency;        // Added by aguenette
 
     nh.getParam("pcap_file", pcapFile);
     nh.getParam("server_ip", serverIp);
@@ -61,6 +62,7 @@ public:
     nh.getParam("fixed_frame", fixedFrame);
     nh.getParam("standby", standby);        // Added by agruet
     nh.getParam("return_mode", returnMode);  // Added by aguenette
+    nh.getParam("frequency", frequency);     // Added by aguenette
 
     if(!pcapFile.empty()){
       hsdk = new PandarGeneralSDK(pcapFile, boost::bind(&HesaiLidarClient::lidarCallback, this, _1, _2, _3), \
@@ -119,6 +121,16 @@ public:
         ROS_WARN("The possible values are:\n- 'last'\n- 'strongest'\n- 'last+strongest'\n- 'first'\n- 'first+last'\n- 'first+strongest'");
         hsdk->SetReturnMode(returnMode, returnModes.at("strongest"));
       }
+
+      if (spinSpeeds.find(frequency) == spinSpeeds.end())
+      {
+        ROS_WARN_STREAM("Invalid frequency: " << frequency << ". Using '10' Hz frequency instead.");
+        ROS_WARN_STREAM("The possible values are:\n- 5\n- 10\n- 20");
+        frequency = 10;
+      }
+
+      ROS_INFO_STREAM("Setting LiDAR frequency to '" << frequency << "' Hz.");
+      hsdk->SetSpinSpeed(frequency, spinSpeeds.at(frequency));
 
       if (standby)
       {
@@ -192,6 +204,14 @@ private:
     {"first",           0x03},
     {"first+last",      0x04},
     {"first+strongest", 0x05}
+  };
+
+  // Mapping frequency (Hz) to spin speed (RPM)
+  const std::unordered_map<int, uint32_t> spinSpeeds
+  {
+    {5,  300},
+    {10, 600},
+    {20, 1200}
   };
 };
 
