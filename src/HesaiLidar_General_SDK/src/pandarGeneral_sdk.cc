@@ -157,6 +157,20 @@ void PandarGeneralSDK::SetReturnMode(const std::string& return_mode, unsigned ch
     std::cout << "Changing Return Mode for '" << return_mode << (ret == 0 ? "' succeeded." : "' failed.")  << std::endl;
 }
 
+// Added by aguenette
+void PandarGeneralSDK::SetSpinSpeed(const int frequency, uint32_t frequency_data)
+{
+    if (!tcp_command_client_)
+    {
+        return;
+    }
+
+    int32_t ret = 0;
+    ret = TcpCommandSetSpinSpeed(tcp_command_client_, frequency_data);
+
+    std::cout << "Changing Frequency for '" << frequency << (ret == 0 ? "' succeeded." : "' failed.")  << std::endl;
+}
+
 void PandarGeneralSDK::GetCalibrationFromDevice() {
   // LOG_FUNC();
   if (!tcp_command_client_) {

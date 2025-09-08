@@ -52,7 +52,7 @@ class PandarGeneralSDK {
           pcl_callback,
       boost::function<void(double)> gps_callback, uint16_t start_angle,
       int tz, int pcl_type, std::string lidar_type, std::string frame_id, std::string timestampType,  // the default timestamp type is LiDAR time
-      std::string lidar_correction_file, std::string multicast_ip, bool coordinate_correction_flag, 
+      std::string lidar_correction_file, std::string multicast_ip, bool coordinate_correction_flag,
       std::string target_frame, std::string fixed_frame);
   /**
    * @brief Constructor
@@ -67,7 +67,7 @@ class PandarGeneralSDK {
       boost::function<void(boost::shared_ptr<PPointCloud>, double, hesai_lidar::PandarScanPtr)> pcl_callback, \
       uint16_t start_angle, int tz, int pcl_type, std::string lidar_type, std::string frame_id, std::string timestampType, // the default timestamp type is LiDAR time
       std::string lidar_correction_file, bool coordinate_correction_flag,
-      std::string target_frame, std::string fixed_frame); 
+      std::string target_frame, std::string fixed_frame);
   ~PandarGeneralSDK();
 
   /**
@@ -82,6 +82,7 @@ class PandarGeneralSDK {
   void Stop();
   void StandBy(bool standBy);   // Added by agruet
   void SetReturnMode(const std::string& return_mode, unsigned char return_mode_data);   // Added by aguenette
+  void SetSpinSpeed(const int frequency, uint32_t spin_speed);   // Added by aguenette
   void PushScanPacket(hesai_lidar::PandarScanPtr scan);
 
  private:
